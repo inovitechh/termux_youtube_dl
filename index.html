@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termux Youtube İndirici (Video & MP3)</title>
+    <title>Termux Youtube DL - V3.0 (Dil Seçimli)</title>
     <style>
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
-            --accent: #f59e0b; /* Amber rengi - Güncelleme vurgusu için */
-            --accent-blue: #38bdf8;
+            --accent: #8b5cf6; /* Mor renk - V3 için */
             --code-bg: #000000;
             --code-text: #4ade80;
         }
@@ -30,22 +29,15 @@
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #334155;
-        }
-
         h1 {
-            color: var(--accent-blue);
-            margin: 0;
-            font-size: 2rem;
+            color: var(--accent);
+            text-align: center;
+            font-size: 1.8rem;
         }
         
         .badge-new {
-            background-color: var(--accent);
-            color: #000;
+            background-color: #f43f5e;
+            color: #fff;
             font-size: 0.8rem;
             padding: 2px 8px;
             border-radius: 10px;
@@ -53,35 +45,13 @@
             margin-left: 10px;
         }
 
-        p.subtitle {
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-
         .step-card {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-            border-left: 5px solid var(--accent-blue);
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .step-number {
-            background-color: var(--accent-blue);
-            color: #0f172a;
-            font-weight: bold;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-right: 10px;
-            font-size: 0.9rem;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         .code-block {
@@ -90,99 +60,94 @@
             padding: 15px;
             border-radius: 6px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             overflow-x: auto;
             white-space: pre;
             border: 1px solid #333;
             margin: 10px 0;
-            position: relative;
         }
-
+        
         .note {
-            background-color: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 10px;
-            border-radius: 6px;
             font-size: 0.9rem;
             color: var(--text-muted);
-            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>Termux & yt-dlp Rehberi <span class="badge-new">V2.0</span></h1>
-        <p class="subtitle">Video veya MP3 seçeneği sunan gelişmiş script.</p>
-    </header>
+    <h1>Termux & yt-dlp <span class="badge-new">V3.0 PRO</span></h1>
+    <p style="text-align: center; color: #94a3b8;">Türkçe/İngilizce Dil Seçeneği Eklendi</p>
 
     <div class="step-card">
-        <h2><span class="step-number">Adım 1</span> Temel Kurulumlar</h2>
-        <p>Eğer Termux'u yeni yüklediyseniz sırasıyla şunları yapın (Daha önce yaptıysanız bu adımı geçin):</p>
-        
-        <div class="code-block">termux-setup-storage
-pkg update && pkg upgrade
-pkg install python ffmpeg
-pip install yt-dlp</div>
-    </div>
-
-    <div class="step-card" style="border-left-color: var(--accent);">
-        <h2><span class="step-number" style="background-color: var(--accent);">Adım 2</span> Seçmeli Scripti Oluşturma</h2>
-        <p>Bu adımda, "Paylaş" dediğinizde size <strong>Video mu yoksa MP3 mü?</strong> diye soran akıllı kodu yazacağız.</p>
-        
-        <p>1. Klasör oluşturun (Varsa hata vermez, devam edin):</p>
-        <div class="code-block">mkdir -p ~/bin</div>
-
-        <p>2. Dosyayı düzenlemek için açın:</p>
+        <h2>🛠️ Güncelleme Nasıl Yapılır?</h2>
+        <p>Aşağıdaki kodu kopyalayın ve Termux'ta dosyanızı düzenleyin:</p>
         <div class="code-block">nano ~/bin/termux-url-opener</div>
+        <p>Eski kodları silip yerine <strong>aşağıdaki kodu yapıştırın:</strong></p>
 
-        <p>3. <strong>ÖNEMLİ:</strong> Aşağıdaki kodun tamamını kopyalayın ve Termux ekranına yapıştırın. (Önceki kodların hepsini sildiğinizden emin olun)</p>
-        
 <div class="code-block">#!/bin/bash
 clear
-echo "--------------------------------"
-echo "   YOUTUBE İNDİRİCİ (yt-dlp)    "
-echo "--------------------------------"
+echo "-----------------------------------"
+echo "   YOUTUBE PRO İNDİRİCİ (V3.0)     "
+echo "-----------------------------------"
 echo "Link: $1"
 echo ""
-echo "Ne indirmek istersin?"
-echo "1) Video (En İyi Kalite)"
-echo "2) Ses Sadece (MP3)"
+echo "1) Video (Otomatik En İyi Kalite)"
+echo "2) Ses Sadece (MP3 - En İyi Kalite)"
+echo "3) GELİŞMİŞ: Ses/Görüntü Formatı Seç"
+echo "   (Dil seçimi veya çözünürlük için bunu kullan)"
 echo ""
-read -p "Seçimini yap (1 veya 2): " secim
+read -p "Seçimin (1-3): " secim
 
 if [ "$secim" = "1" ]; then
     echo "Video indiriliyor..."
     yt-dlp -o "/sdcard/Download/%(title)s.%(ext)s" "$1"
+
 elif [ "$secim" = "2" ]; then
-    echo "MP3 olarak indiriliyor..."
+    echo "MP3 indiriliyor..."
     yt-dlp -x --audio-format mp3 -o "/sdcard/Download/%(title)s.%(ext)s" "$1"
+
+elif [ "$secim" = "3" ]; then
+    echo ""
+    echo "Analiz ediliyor, lütfen bekle..."
+    # Listeyi getir ama sadece önemli kısımları göster
+    yt-dlp -F "$1"
+    echo ""
+    echo "-----------------------------------"
+    echo "YUKARIDAKİ LİSTEYE BAK"
+    echo "Sol baştaki 'ID' numarasını not et."
+    echo "Örn: Türkçe ses için satırda 'tr' yazar."
+    echo "-----------------------------------"
+    read -p "İndirmek istediğin ID numarasını yaz: " format_id
+    
+    echo "Seçilen ID ($format_id) indiriliyor..."
+    # Seçilen ID'yi indirir. Video ise video, ses ise ses iner.
+    yt-dlp -f $format_id -o "/sdcard/Download/%(title)s.%(ext)s" "$1"
+
 else
-    echo "Hatalı seçim yaptın, kapanıyor..."
+    echo "Hatalı seçim!"
 fi
 
 echo ""
-echo "İşlem Tamamlandı! Enter'a bas çık."
+echo "İşlem bitti. Çıkmak için Enter'a bas."
 read end</div>
-
-        <p class="note"><strong>Kaydetmek için:</strong> <code>CTRL</code> + <code>x</code> tuşuna basın, sonra <code>y</code> tuşuna basın, en son <code>Enter</code> tuşuna basın.</p>
+        
+        <p class="note">Kaydetmek için: <code>CTRL + X</code>, sonra <code>Y</code>, sonra <code>Enter</code>.</p>
     </div>
-
-    <div class="step-card" style="border-left-color: #4ade80;">
-        <h2>🚀 Nasıl Kullanılır?</h2>
+    
+    <div class="step-card">
+        <h2>❓ Nasıl Dil Seçilir?</h2>
         <ol>
-            <li>YouTube'da bir videoya girin.</li>
-            <li><strong>Paylaş -> Termux</strong> deyin.</li>
-            <li>Siyah ekran açılacak ve soracak:
-                <br><code>1) Video</code>
-                <br><code>2) Ses (MP3)</code>
-            </li>
-            <li>Klavyeden <strong>1</strong> veya <strong>2</strong> yazıp Enter'a basın.</li>
-            <li>Dosyanız <strong>Download</strong> klasörüne inecektir.</li>
+            <li>Paylaş -> Termux deyin.</li>
+            <li><strong>3</strong> numaralı seçeneği seçin.</li>
+            <li>Ekrana karmaşık bir liste gelecek.</li>
+            <li>Listede <strong>"audio only"</strong> yazan satırlara bakın. Yanlarında <code>[tr]</code>, <code>[en]</code> gibi dil kodları yazar.</li>
+            <li>İstediğiniz dilin en solundaki <strong>ID</strong> numarasını (Örn: <code>251</code> veya <code>140-1</code>) klavyeden yazıp Enter'a basın.</li>
         </ol>
     </div>
-
 </div>
 
 </body>
