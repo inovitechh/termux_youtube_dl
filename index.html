@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termux Youtube İndirici (Video & MP3)</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #f59e0b; /* Amber rengi - Güncelleme vurgusu için */
+            --accent-blue: #38bdf8;
+            --code-bg: #000000;
+            --code-text: #4ade80;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #334155;
+        }
+
+        h1 {
+            color: var(--accent-blue);
+            margin: 0;
+            font-size: 2rem;
+        }
+        
+        .badge-new {
+            background-color: var(--accent);
+            color: #000;
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .step-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            border-left: 5px solid var(--accent-blue);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-number {
+            background-color: var(--accent-blue);
+            color: #0f172a;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            white-space: pre;
+            border: 1px solid #333;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .note {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Termux & yt-dlp Rehberi <span class="badge-new">V2.0</span></h1>
+        <p class="subtitle">Video veya MP3 seçeneği sunan gelişmiş script.</p>
+    </header>
+
+    <div class="step-card">
+        <h2><span class="step-number">Adım 1</span> Temel Kurulumlar</h2>
+        <p>Eğer Termux'u yeni yüklediyseniz sırasıyla şunları yapın (Daha önce yaptıysanız bu adımı geçin):</p>
+        
+        <div class="code-block">termux-setup-storage
+pkg update && pkg upgrade
+pkg install python ffmpeg
+pip install yt-dlp</div>
+    </div>
+
+    <div class="step-card" style="border-left-color: var(--accent);">
+        <h2><span class="step-number" style="background-color: var(--accent);">Adım 2</span> Seçmeli Scripti Oluşturma</h2>
+        <p>Bu adımda, "Paylaş" dediğinizde size <strong>Video mu yoksa MP3 mü?</strong> diye soran akıllı kodu yazacağız.</p>
+        
+        <p>1. Klasör oluşturun (Varsa hata vermez, devam edin):</p>
+        <div class="code-block">mkdir -p ~/bin</div>
+
+        <p>2. Dosyayı düzenlemek için açın:</p>
+        <div class="code-block">nano ~/bin/termux-url-opener</div>
+
+        <p>3. <strong>ÖNEMLİ:</strong> Aşağıdaki kodun tamamını kopyalayın ve Termux ekranına yapıştırın. (Önceki kodların hepsini sildiğinizden emin olun)</p>
+        
+<div class="code-block">#!/bin/bash
+clear
+echo "--------------------------------"
+echo "   YOUTUBE İNDİRİCİ (yt-dlp)    "
+echo "--------------------------------"
+echo "Link: $1"
+echo ""
+echo "Ne indirmek istersin?"
+echo "1) Video (En İyi Kalite)"
+echo "2) Ses Sadece (MP3)"
+echo ""
+read -p "Seçimini yap (1 veya 2): " secim
+
+if [ "$secim" = "1" ]; then
+    echo "Video indiriliyor..."
+    yt-dlp -o "/sdcard/Download/%(title)s.%(ext)s" "$1"
+elif [ "$secim" = "2" ]; then
+    echo "MP3 olarak indiriliyor..."
+    yt-dlp -x --audio-format mp3 -o "/sdcard/Download/%(title)s.%(ext)s" "$1"
+else
+    echo "Hatalı seçim yaptın, kapanıyor..."
+fi
+
+echo ""
+echo "İşlem Tamamlandı! Enter'a bas çık."
+read end</div>
+
+        <p class="note"><strong>Kaydetmek için:</strong> <code>CTRL</code> + <code>x</code> tuşuna basın, sonra <code>y</code> tuşuna basın, en son <code>Enter</code> tuşuna basın.</p>
+    </div>
+
+    <div class="step-card" style="border-left-color: #4ade80;">
+        <h2>🚀 Nasıl Kullanılır?</h2>
+        <ol>
+            <li>YouTube'da bir videoya girin.</li>
+            <li><strong>Paylaş -> Termux</strong> deyin.</li>
+            <li>Siyah ekran açılacak ve soracak:
+                <br><code>1) Video</code>
+                <br><code>2) Ses (MP3)</code>
+            </li>
+            <li>Klavyeden <strong>1</strong> veya <strong>2</strong> yazıp Enter'a basın.</li>
+            <li>Dosyanız <strong>Download</strong> klasörüne inecektir.</li>
+        </ol>
+    </div>
+
+</div>
+
+</body>
+</html>
